@@ -6,14 +6,14 @@ class App:
 
         sg.theme('DarkAmber')
 
-        # Cria o layout da tela
+        # Create layout for this screen.
         layout = [  [sg.Text('CEP'), sg.Input(size=(30,0), key='CEP')],
-                    [sg.Button('Buscar')],
+                    [sg.Button('Search')],
                     [sg.Output(size=(60,20))]  ]  
 
-        self.screen = sg.Window('Buscador CEP', layout)
+        self.screen = sg.Window('ZipCode Searcher', layout)
 
-    def consultacep(self, cep):
+    def consultcep(self, cep):
 
         url = requests.get('https://viacep.com.br/ws/{}/json/'.format(cep))
         if url.status_code == 200:
@@ -27,19 +27,19 @@ class App:
 
     def start_window(self):
         while True:
-
+            # Receive the values from screen.
             self.button, self.values = self.screen.Read()
 
             try:
                 if self.button == sg.WIN_CLOSED:
                     break
-                elif self.button == 'Buscar':
-                    valores = self.consultacep(self.values['CEP'])
+                elif self.button == 'Search':
+                    valores = self.consultcep(self.values['CEP'])
                     for k, v in valores.items():
                         print(k.upper() , ':' ,v)
             
             except:
-                print("Error, função não definida")
+                print("Error, function not defined")
 
 fc = App()
 fc.start_window()
